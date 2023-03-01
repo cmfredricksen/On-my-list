@@ -1,7 +1,11 @@
 import PySimpleGUI as sg
 import modules.functions as functions
+import time
+
+sg.theme("DarkBlue4")
 
 # PYGUI widgets, add to layout below
+clock = sg.Text("Date:  ", key="clock", font=("courier", 14))
 label = sg.Text("Enter a todo: ")
 input_box = sg.InputText(tooltip="Enter a todo", key="todo")
 add_button = sg.Button("add")
@@ -14,6 +18,7 @@ exit_button = sg.Button("exit")
 
 # In the layout, each list is equal to one row
 layout = [
+    [clock],
     [label], 
     [input_box, add_button], 
     [list_box, edit_button, complete_button],
@@ -24,6 +29,7 @@ window = sg.Window("On my List...", layout, font=("helvetica", 16))
 
 while True:
     event, values = window.read() # after this point, mutate data and return response, finish by closing
+    window["clock"].update(value=time.strftime("%A, %b %d, %Y"))
     # print(f"Event: {event}")
     # print(f"Values: {values}")
     match event:
@@ -40,12 +46,12 @@ while True:
         case 'edit':
             try:    
                 todo_edit = values["todos"][0]
-                new_todo = values["todo"] + "\n"
+                new_todo = values["todo"] 
 
                 todos = functions.get_todos()
 
                 index = todos.index(todo_edit)
-                todos[index] = new_todo
+                todos[index] = new_todo + "\n"
 
                 functions.write_todos(todos)
                 window["todos"].update(values=todos)
@@ -53,6 +59,9 @@ while True:
             
             except IndexError:
                 sg.popup("Please select a todo from the list first.", font=("Helvetica", 14))
+
+            except ValueError:
+                sg.popup("Value Error")
 
         case 'todos':
             window['todo'].update(value=values['todos'][0])
