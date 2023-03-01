@@ -1,5 +1,5 @@
 # from functions import get_todos, write_todos
-import modules.functions as functions
+import functions as functions
 import time
 
 while True:

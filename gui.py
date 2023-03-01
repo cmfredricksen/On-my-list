@@ -1,6 +1,12 @@
 import PySimpleGUI as sg
-import modules.functions as functions
+import functions as functions
 import time
+import os
+
+
+if not os.path.exists("todos.txt"):
+    with open("todos.txt", "w") as file:
+        pass
 
 sg.theme("DarkBlue4")
 
@@ -8,7 +14,7 @@ sg.theme("DarkBlue4")
 clock = sg.Text("Date:  ", key="clock", font=("courier", 14))
 label = sg.Text("Enter a todo: ")
 input_box = sg.InputText(tooltip="Enter a todo", key="todo")
-add_button = sg.Button("add")
+add_button = sg.Button("add", tooltip="Add new todo", key="add")
 
 list_box = sg.Listbox(values=functions.get_todos(), key="todos", enable_events=True, size=[45, 10])
 
@@ -78,6 +84,9 @@ while True:
 
             except IndexError:
                 sg.popup("Please select a todo from the list first.", font=("Helvetica", 14))
+
+            except ValueError:
+                sg.popup("Value Error")
 
         case 'exit':
             break
