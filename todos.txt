@@ -1,0 +1,2 @@
+learn streamlit
+cook dinner
